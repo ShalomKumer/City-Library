@@ -1,0 +1,66 @@
+/* כל ההדר */
+.header {
+  width: 100%;
+  padding: 12px 24px;
+  background: rgba(15, 23, 42, 0.6); /* כהה שקוף */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+}
+
+/* קבוצת הכפתורים */
+.header .buttons {
+  display: flex;
+  gap: 16px;
+}
+
+/* הכפתורים עצמם */
+.header .buttons button {
+  background: transparent;
+  border: 2px solid rgba(255,255,255,0.25);
+  color: #f1f5f9; /* slate-100 */
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* אפקט hover */
+.header .buttons button:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.5);
+  transform: translateY(-2px);
+  color: #60a5fa; /* כחול בהיר */
+}
+
+/* פוקוס לנגישות */
+.header .buttons button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px #3b82f6;
+}
+
+/* מצב בהיר */
+@media (prefers-color-scheme: light) {
+  .header {
+    background: rgba(255, 255, 255, 0.85);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  }
+  .header .buttons button {
+    border-color: rgba(0,0,0,0.2);
+    color: #1e293b;
+  }
+  .header .buttons button:hover {
+    background: rgba(0,0,0,0.05);
+    border-color: rgba(0,0,0,0.4);
+    color: #2563eb;
+  }
+}

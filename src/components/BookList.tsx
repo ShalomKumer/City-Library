@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { myContext } from "../components/Context";
 import BookItem from "./BookItem";
 import FetchBooks from "./FetchBooks"
+import '../styles/BookList.css'
 
 const BookList = () => {
   const ctx = useContext(myContext);

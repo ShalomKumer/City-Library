@@ -1,0 +1,43 @@
+/* ========= BookList (פריסת רשימת כרטיסים) ========= */
+
+/* קונטיינר לרשימת ספרים */
+.allBookList{
+  display: grid;
+  /* עמודות רספונסיביות – מינימום 260px לכל כרטיס, אחרת מתרחבות */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  padding: 16px;
+  align-items: stretch;
+}
+
+/* אפקט stagger עדין לכניסה (תואם לאנימציה ב-BookItem) */
+.allBookList .card:nth-child(1){ animation-delay: 40ms; }
+.allBookList .card:nth-child(2){ animation-delay: 80ms; }
+.allBookList .card:nth-child(3){ animation-delay: 120ms; }
+.allBookList .card:nth-child(4){ animation-delay: 160ms; }
+.allBookList .card:nth-child(5){ animation-delay: 200ms; }
+.allBookList .card:nth-child(6){ animation-delay: 240ms; }
+
+/* ריווח חכם למסכים גדולים */
+@media (min-width: 1280px){
+  .allBookList{
+    gap: 24px;
+    padding: 24px;
+  }
+}
+
+/* התאמה למסכים צרים מאוד */
+@media (max-width: 360px){
+  .allBookList{
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 12px;
+  }
+}
+
+/* אופציונלי: רקע עדין לאזור הרשימה (אפשר להסיר אם יש רקע גלובלי) */
+.books-area-bg{
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(99,102,241,0.06), transparent 60%),
+    radial-gradient(900px 500px at 110% 10%, rgba(56,189,248,0.06), transparent 60%);
+}
