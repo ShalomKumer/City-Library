@@ -1,12 +1,36 @@
-import { createContext, useState, useEffect, useMemo } from "react";
-
-export const myContext = createContext(null);
-
+import { createContext, useState, useMemo, useContext, ReactNode } from "react";
 import type { Review, Book, Member } from "./types";
-const Context = () => {
+
+type ContextType = {
+  book: Book | undefined;
+  setBook: React.Dispatch<React.SetStateAction<Book | undefined>>;
+  member: Member | undefined;
+  setMember: React.Dispatch<React.SetStateAction<Member | undefined>>;
+  review: Review | undefined;
+  setReview: React.Dispatch<React.SetStateAction<Review | undefined>>;
+  booksList: Book[];
+  setBookList: React.Dispatch<React.SetStateAction<Book[]>>;
+  memberList: Member[];
+  setMemberList: React.Dispatch<React.SetStateAction<Member[]>>;
+  reviewList: Review[];
+  setReviewList: React.Dispatch<React.SetStateAction<Review[]>>;
+};
+
+type ProviderProps = { children: ReactNode };
+
+export const myContext = createContext<ContextType | undefined>(undefined);
+
+export const useLibraryContext = (): ContextType => {
+  const ctx = useContext(myContext);
+  if (!ctx)
+    throw new Error("useLibraryContext must be used within <Context> provider");
+  return ctx;
+};
+
+const Context: React.FC<ProviderProps> = ({ children }) => {
   const [book, setBook] = useState<Book | undefined>(undefined);
-  const [membe, setMember] = useState<Member | undefined>(undefined);
-  const [revie, setReview] = useState<Review | undefined>(undefined);
+  const [member, setMember] = useState<Member | undefined>(undefined);
+  const [review, setReview] = useState<Review | undefined>(undefined);
 
   const [booksList, setBookList] = useState<Book[]>([]);
   const [memberList, setMemberList] = useState<Member[]>([]);
@@ -16,9 +40,9 @@ const Context = () => {
     () => ({
       book,
       setBook,
-      membe,
+      member,
       setMember,
-      revie,
+      review,
       setReview,
       booksList,
       setBookList,
@@ -27,14 +51,10 @@ const Context = () => {
       reviewList,
       setReviewList,
     }),
-    []
+    [book, member, review, booksList, memberList, reviewList]
   );
 
-  return (
-  <>
-  <myContext.Provider value={value}>{}</myContext.Provider>
-  </>
-  )
+  return <myContext.Provider value={value}>{children}</myContext.Provider>;
 };
 
 export default Context;
