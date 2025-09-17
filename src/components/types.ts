@@ -1,3 +1,9 @@
+export type Review = {
+    user: string,
+    scor: 1|2|3|4|5
+    comment?: string,
+}
+
 export type Book = {
     id:number
     bookName:string,
@@ -11,14 +17,8 @@ export type Book = {
     genres:string[],
     reting:{
         average:number,
-        reviews:string[]
+        reviews:Review[]
     }
-}
-
-export type Review = {
-    user: string,
-    scor: 1|2|3|4|5
-    comment: string,
 }
 
 export type Member = {
