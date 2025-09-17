@@ -1,6 +1,6 @@
 export type Review = {
     user: string,
-    scor: 1|2|3|4|5
+    score: 1|2|3|4|5
     comment?: string,
 }
 
@@ -15,7 +15,7 @@ export type Book = {
     year:number,
     read:boolean,
     genres:string[],
-    reting:{
+    rateing:{
         average:number,
         reviews:Review[]
     }
