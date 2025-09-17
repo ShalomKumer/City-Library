@@ -1,14 +1,17 @@
-import { useNavigate } from "react-router";
-const Header = () => {
-    const nav = useNavigate()
-  return (
-    <>
-    <div>
-        <button onClick={nav('/')}>Home</button>
-        <button onClick={nav('/userlist')}>Users</button>
-    </div>
-    </>
-  )
-}
+import { useNavigate } from "react-router-dom";
 
-export default Header
+const Header = () => {
+  const nav = useNavigate();
+
+  return (
+    <div>
+
+      <div className="buttons">
+        <button onClick={() => nav("/")}>Home</button>
+        <button onClick={() => nav("/userlist")}>Users</button>
+      </div>
+    </div>
+  );
+};
+
+export default Header;
