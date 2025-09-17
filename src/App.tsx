@@ -1,6 +1,7 @@
 import Home from "./Pages/Home";
 import UsersList from "./Pages/UsersList";
 import UserProfile from "./Pages/UserProfile";
+import BookDit from "./Pages/BookDit";
 import Context from "./components/Context";
 import { ToastContainer } from "react-toastify";
 import { useState, useContext } from "react";
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/userlist" element={<UsersList />} />
           <Route path="/userprofile" element={<UserProfile />} />
+          <Route path="/book/:id" element={<BookDit />} />
         </Routes>
       </Context>
     </>

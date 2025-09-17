@@ -1,0 +1,152 @@
+:root{
+  --card-bg: rgba(255,255,255,0.7);
+  --card-border: rgba(0,0,0,0.06);
+  --card-text: #0f172a;       /* slate-900 */
+  --muted-text: #475569;      /* slate-600 */
+  --accent: #5b8def;          /* כחול אלגנטי */
+  --shadow: 0 10px 25px rgba(0,0,0,0.08);
+  --shadow-hover: 0 16px 36px rgba(0,0,0,0.12);
+}
+
+@media (prefers-color-scheme: dark){
+  :root{
+    --card-bg: rgba(17,24,39,0.6);   /* slate-900 שקוף */
+    --card-border: rgba(255,255,255,0.08);
+    --card-text: #e5e7eb;            /* gray-200 */
+    --muted-text: #94a3b8;           /* slate-400 */
+    --accent: #93c5fd;               /* כחול בהיר */
+    --shadow: 0 10px 25px rgba(0,0,0,0.35);
+    --shadow-hover: 0 18px 42px rgba(0,0,0,0.45);
+  }
+}
+
+.card{
+  width: 100%;
+  max-width: 320px;
+  margin: 12px;
+}
+
+/* כל הכרטיס הוא כפתור לחיץ */
+.card > button{
+  display: block;
+  width: 100%;
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  background: var(--card-bg);
+  color: var(--card-text);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+  text-align: inherit; /* לשמירת יישור */
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* אפקט ריחוף קל והרמה */
+.card > button:hover{
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+  border-color: color-mix(in oklab, var(--card-border) 60%, var(--accent));
+}
+
+/* נגישות - פוקוס נאה לעכבר/מקלדת */
+.card > button:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in oklab, white 40%, var(--accent));
+  transform: translateY(-2px);
+}
+
+/* אזור התמונה בראש הכרטיס */
+.top{
+  position: relative;
+  aspect-ratio: 3 / 4;         /* תמונת ספר אנכית */
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.02));
+}
+
+.top img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 300ms ease;
+}
+
+/* זום עדין על התמונה בריחוף */
+.card > button:hover .top img{
+  transform: scale(1.03);
+}
+
+/* כותרות וטקסטים */
+.Taria{
+  padding: 14px 16px 6px;
+}
+
+.Taria h2{
+  margin: 0 0 4px 0;
+  font-size: clamp(1rem, 1.2vw + 0.8rem, 1.25rem);
+  line-height: 1.3;
+  letter-spacing: 0.2px;
+}
+
+.Taria h2 strong{
+  font-weight: 700;
+}
+
+.Taria h3{
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--muted-text);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* אזור תחתון: שנה / סטטוס קריאה / ציון */
+.bottom{
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px 14px;
+  border-top: 1px dashed var(--card-border);
+}
+
+.year p{
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted-text);
+}
+
+.read{
+  justify-self: end;
+  font-size: 0.85rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--card-border);
+  color: var(--muted-text);
+  background: color-mix(in oklab, var(--card-bg) 70%, white);
+}
+
+.score{
+  justify-self: end;
+  min-width: 44px;
+  text-align: center;
+  padding: 6px 10px;
+  border-radius: 12px;
+  background: color-mix(in oklab, var(--accent) 18%, transparent);
+  border: 1px solid color-mix(in oklab, var(--accent) 30%, var(--card-border));
+}
+
+.score h4{
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* רספונסיביות בסיסית לרשת כרטיסים */
+.allBookList{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}

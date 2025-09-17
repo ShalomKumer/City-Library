@@ -1,18 +1,17 @@
 export type Review = {
     user: string,
-    score: 1|2|3|4|5
+    score: number
     comment?: string,
 }
 
 export type Book = {
-    id:number
+    id:string
     bookName:string,
-    author:{
-        firstName:string,
-        lastName: string,
-        birthYear?: number,
-    },
-    year:number,
+    description:string
+    author:string[]
+    img:string,
+    alt:string,
+    year:string,
     read:boolean,
     genres:string[],
     rateing:{

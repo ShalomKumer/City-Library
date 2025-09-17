@@ -1,9 +1,24 @@
-import React from 'react'
+import { useContext } from "react";
+import { myContext } from "../components/Context";
+import BookItem from "./BookItem";
+import FetchBooks from "./FetchBooks"
 
 const BookList = () => {
-  return (
-    <div>BookList</div>
-  )
-}
+  const ctx = useContext(myContext);
+  if (!ctx) return null;
+  const { booksList } = ctx;
 
-export default BookList
+  return (
+    <>
+      <FetchBooks />
+
+      <div className="allBookList">
+        {booksList.map((b, idx) => (
+          <BookItem key={b.id ?? idx} b={b} />
+        ))}
+      </div>
+    </>
+  );
+};
+
+export default BookList;
