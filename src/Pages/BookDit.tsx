@@ -5,7 +5,6 @@ import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import Header from "../components/Header";
 import { toast } from "react-toastify";
-import type { Book } from "../components/types";
 
 import "../styles/BookDit.css";
 

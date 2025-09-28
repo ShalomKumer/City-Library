@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { useNavigate } from "react-router";
 import { myContext } from "../components/Context";
 import BookItem from "../components/BookItem";
-import { toast } from "react-toastify";
 import Header from "../components/Header";
 
 import '../styles/myBooks.css'

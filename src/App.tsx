@@ -5,7 +5,6 @@ import BookDit from "./Pages/BookDit";
 import MyBooks from "./Pages/MyBooks";
 import Context from "./components/Context";
 import { ToastContainer } from "react-toastify";
-// import { useState, useContext } from "react";
 import { Routes, Route } from "react-router";
 
 import "./App.css";
