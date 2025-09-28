@@ -4,7 +4,18 @@ import type { Member, Book } from "./types";
 
 
 function findBooksRead(books: Book[]): string[] {
-  return books.filter(b => b.read).map(b => b.bookName);
+  // return books.filter(b => b.read).map(b => b.bookName);
+  let amount  = Math.round(Math.random() * (8 - 2) + 2 )
+  let listBooksR: string [] = []
+  for (let i = 0 ; i < amount ;i++ ){
+    let idx :number[] = []
+    let index = Math.round(Math.random() * (books.length - 1) + 1 )
+    idx.push(index)
+    if(!idx.includes(index)){
+      listBooksR.push(books[index].bookName)
+    }
+  }
+  return listBooksR
 }
 
 function mapToMember(user: any, idx: number, booksRead: string[]): Member {
@@ -21,7 +32,7 @@ function mapToMember(user: any, idx: number, booksRead: string[]): Member {
     booksRead,
   } as Member;
 }
-async function fetchRandomUsers(results = 30): Promise<any[]> {
+async function fetchRandomUsers(results: number): Promise<any[]> {
   try {
     const res = await fetch(`https://randomuser.me/api/?results=${results}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -48,22 +59,15 @@ function dedupeById(list: Member[]): Member[] {
 const FetchUsers: React.FC = () => {
   const ctx = useContext(myContext);
   if (!ctx) return null;
-
-  const { memberList, setMemberList, booksList } = ctx;
+  const { setMemberList, booksList } = ctx;
 
   useEffect(() => {
     let cancelled = false;
-
     (async () => {
-      // ספרים שנקראו (לשיבוץ ל-booksRead)
       const readNames = findBooksRead(booksList);
-
-      // מביאים משתמשים
-      const rawUsers = await fetchRandomUsers(12);
-
-      // ממפים ל-Member
+      const rawUsers = await fetchRandomUsers(30);
       const mapped: Member[] = rawUsers.map((u, i) =>
-        mapToMember(u, i, readNames.slice(0, 3)) // לדוגמה: 0–3 ספרים לכל משתמש
+        mapToMember(u, i, readNames)
       );
 
       if (!cancelled) {
@@ -74,7 +78,7 @@ const FetchUsers: React.FC = () => {
     return () => { cancelled = true; };
   }, [booksList, setMemberList]);
 
-  return null; // קומפוננטת טעינה בלבד
+  return null;
 };
 
 export default FetchUsers;
