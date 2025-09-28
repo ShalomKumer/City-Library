@@ -94,14 +94,6 @@ const UserProfile: React.FC = () => {
                       if (!id) return;
                       nav(`/book/${id}`);
                     }}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        const id = findBook(title, booksList);
-                        if (!id) return;
-                        nav(`/book/${id}`);
-                      }
-                    }}
                   >
                     {title}
                   </button>

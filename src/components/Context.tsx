@@ -17,6 +17,8 @@ type ContextType = {
   setMemberList: React.Dispatch<React.SetStateAction<Member[]>>;
   reviewList: Review[];
   setReviewList: React.Dispatch<React.SetStateAction<Review[]>>;
+  myBooks: Book[];
+  setMyBooks:  React.Dispatch<React.SetStateAction<Book[]>>
 };
 
 type ProviderProps = { children: ReactNode };
@@ -39,6 +41,8 @@ const Context: React.FC<ProviderProps> = ({ children }) => {
   const [memberList, setMemberList] = useState<Member[]>([]);
   const [reviewList, setReviewList] = useState<Review[]>([]);
 
+  const [myBooks , setMyBooks] = useState<Book[]>([])
+
   const value = useMemo(
     () => ({
       book,
@@ -53,8 +57,9 @@ const Context: React.FC<ProviderProps> = ({ children }) => {
       setMemberList,
       reviewList,
       setReviewList,
+      myBooks,setMyBooks
     }),
-    [book, member, review, booksList, memberList, reviewList]
+    [book, member, review, booksList, memberList, reviewList,myBooks]
   );
 
    return (

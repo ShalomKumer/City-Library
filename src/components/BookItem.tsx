@@ -8,7 +8,7 @@ type BookProp = {
 };
 const BookItem: React.FC<BookProp> = ({ b }) => {
   const nav = useNavigate();
-  let rate = Math.round(b.rateing.average);
+  // let rate = Math.round(b.rateing.average);
   return (
     <>
       <div className="card">

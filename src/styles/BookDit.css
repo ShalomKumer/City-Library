@@ -193,3 +193,27 @@ body{ background: var(--page-bg); }
     transform: none !important;
   }
 }
+
+.read-btn {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.read-no {
+  background: #e2e8f0;       /* אפור בהיר */
+  color: #1e293b;
+}
+
+.read-yes {
+  background: #4ade80;       /* ירוק נעים */
+  color: #fff;
+}
+
+.read-btn:hover {
+  transform: scale(1.05);
+}
