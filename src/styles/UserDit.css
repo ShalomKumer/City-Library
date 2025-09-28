@@ -63,7 +63,6 @@
   line-height: 1.25;
   color: #0f172a;
   display: -webkit-box;                    /* עד 2 שורות */
-  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
