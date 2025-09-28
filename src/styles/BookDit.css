@@ -1,0 +1,195 @@
+/* ========= BookDit – תמונה קטנה יותר ופריסה נקייה ========= */
+
+/* צבעים עדינים */
+:root{
+  --page-bg: #f7f8fb;
+  --surface: #ffffff;
+  --surface-2: #fafbff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e6e9f0;
+  --accent: #6aa6ff;
+  --shadow: 0 3px 10px rgba(15,23,42,.06);
+  --shadow-hover: 0 8px 20px rgba(15,23,42,.10);
+}
+
+@media (prefers-color-scheme: dark){
+  :root{
+    --page-bg: #0f172a;
+    --surface: #111827;
+    --surface-2: #0f172a;
+    --text: #e5e7eb;
+    --muted: #9aa7b7;
+    --border: #1f2a3a;
+    --accent: #8dbbff;
+    --shadow: 0 3px 12px rgba(0,0,0,.35);
+    --shadow-hover: 0 10px 28px rgba(0,0,0,.45);
+  }
+}
+
+body{ background: var(--page-bg); }
+
+.container{
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 0 18px;
+}
+
+/* === פריסה כללית ===
+   תמונה קטנה: 160px (אפשר לשנות ל-180/200),
+   תוכן פרוס יפה מימין */
+.ditails{
+  display: grid;
+  grid-template-columns: 160px 1fr;   /* <<< כאן מקטינים את התמונה */
+  gap: 20px;
+  background: linear-gradient(180deg, var(--surface), var(--surface-2));
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 14px 16px;
+  overflow: hidden;
+
+  opacity: 0;
+  transform: translateY(8px);
+  animation: dit-fade-in 260ms ease forwards;
+}
+@keyframes dit-fade-in{ to{ opacity:1; transform:translateY(0);} }
+
+@media (max-width: 860px){
+  .ditails{
+    grid-template-columns: 1fr; /* במובייל טור יחיד */
+    gap: 16px;
+  }
+}
+
+/* === התמונה – קטנה, נקייה, לא תופסת מקום מיותר === */
+.img{
+  align-self: start;           /* הצמדה לראש הכרטיס */
+  justify-self: center;        /* במידת הצורך, במרכז הטור הצר */
+  width: 100%;
+  max-width: 160px;            /* <<< שליטה ישירה על גודל התמונה */
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #eef2f7;
+  box-shadow: var(--shadow);
+}
+
+.img img{
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;         /* יחס ספר נאה */
+  object-fit: cover;
+  transform: translateZ(0);
+  transition: transform .2s ease;
+}
+.ditails:hover .img img{ transform: scale(1.015); }
+
+/* === אזור הטקסט הארוך (כותרת + תיאור) === */
+.long-text{
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding-top: 2px;
+}
+
+#bookName{
+  margin: 0;
+  font-size: clamp(1.1rem, 1.1vw + .9rem, 1.6rem);
+  line-height: 1.24;
+  color: var(--text);
+  letter-spacing: .2px;
+}
+
+#description{
+  margin: 0;
+  color: var(--muted);
+  font-size: .98rem;
+  line-height: 1.65;
+  background: color-mix(in oklab, var(--surface) 94%, white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+/* === טור הפרטים הנוספים – פריסה יפה יותר ===
+   שתי עמודות קטנות לשבירת טקסט לצ'יפים מסודרים */
+.other-ditails{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(120px, 1fr));
+  gap: 10px 12px;
+  align-content: start;
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px dashed color-mix(in oklab, var(--border) 80%, transparent);
+}
+
+@media (max-width: 860px){
+  .other-ditails{
+    grid-template-columns: 1fr 1fr;   /* עדיין שתי עמודות גם במובייל בינוני */
+  }
+}
+@media (max-width: 520px){
+  .other-ditails{
+    grid-template-columns: 1fr;       /* במסכים צרים מאוד – עמודה אחת */
+  }
+}
+
+/* === "צ'יפים" ופריטי מטה-דאטה פרוסים יפה === */
+#author, #year, .read, .score{
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--surface) 94%, white);
+  color: var(--text);
+  font-weight: 600;
+  font-size: .95rem;
+  letter-spacing: .2px;
+  box-shadow: var(--shadow);
+}
+
+#author{
+  background: color-mix(in oklab, var(--surface) 92%, var(--accent) 6%);
+  border-color: color-mix(in oklab, var(--border) 80%, var(--accent) 18%);
+}
+
+#year{
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* תג מצב קריאה רך */
+.read{
+  color: color-mix(in oklab, var(--text) 70%, var(--muted));
+}
+
+/* דירוג (MUI Rating + מספר) */
+.score{
+  gap: 8px;
+}
+.score h4{
+  margin: 0;
+  font-size: .95rem;
+  color: var(--text);
+}
+
+/* אינטרקציה עדינה לכל "chip" */
+#author:hover, #year:hover, .read:hover, .score:hover{
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-1px);
+  transition: transform .16s ease, box-shadow .22s ease;
+}
+
+/* נגישות – פחות אנימציות */
+@media (prefers-reduced-motion: reduce){
+  .ditails, .img img, #author, #year, .read, .score{
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}

@@ -18,7 +18,7 @@ function mapToBook(item: any, idx: number): Book {
     read: false,
     genres: Array.isArray(v.categories) ? v.categories : [],
     rateing: {
-      average: Math.random() * (6 - 1) + 1,
+      average: Math.random() * (5 - 1) + 1,
       reviews: [],
     },
   };

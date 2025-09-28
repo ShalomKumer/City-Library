@@ -22,12 +22,16 @@ export type Book = {
 
 export type Member = {
     id:number,
-    firstName: string,
-    lastName: string,
+    name:{
+        title:string,
+        first: string,
+        last: string,
+    }
     age?: number,
-    birthDay:string,
-    borrowedBooks:[{
-        bookId:number,
+    email:string,
+    img:string,
+    borrowedBooks?:[{
+        bookId:string,
         borrowedDate:string,
     }],
     booksRead:string[]

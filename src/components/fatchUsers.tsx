@@ -1,14 +1,80 @@
-import { useContext } from "react"
-import { myContext } from "./Context"
-// import { Member } from "./types"
+import { useContext, useEffect } from "react";
+import { myContext } from "./Context";
+import type { Member, Book } from "./types";
 
-const fatchUsers = () => {
-    const ctx = useContext(myContext)
-    if(!ctx)return;
-  return (
-    <>
-    </>
-  )
+
+function findBooksRead(books: Book[]): string[] {
+  return books.filter(b => b.read).map(b => b.bookName);
 }
 
-export default fatchUsers
+function mapToMember(user: any, idx: number, booksRead: string[]): Member {
+  return {
+    id: user.login?.uuid ?? String(idx + 1),
+    name: {
+      title: user.name?.title ?? "",
+      first: user.name?.first ?? "",
+      last:  user.name?.last  ?? "",
+    },
+    age: typeof user.dob?.age === "number" ? user.dob.age : undefined,
+    email: user.email ?? "",
+    img: user.picture?.medium ?? "",
+    booksRead,
+  } as Member;
+}
+async function fetchRandomUsers(results = 30): Promise<any[]> {
+  try {
+    const res = await fetch(`https://randomuser.me/api/?results=${results}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    return Array.isArray(data?.results) ? data.results : [];
+  }
+  catch (err) {
+    console.error("fetchRandomUsers error:", err);
+    return [];
+  }
+}
+function dedupeById(list: Member[]): Member[] {
+  const seen = new Set<string | number>();
+  const out: Member[] = [];
+  for (const m of list) {
+    if (!seen.has(m.id)) {
+      seen.add(m.id);
+      out.push(m);
+    }
+  }
+  return out;
+}
+
+const FetchUsers: React.FC = () => {
+  const ctx = useContext(myContext);
+  if (!ctx) return null;
+
+  const { memberList, setMemberList, booksList } = ctx;
+
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      // ספרים שנקראו (לשיבוץ ל-booksRead)
+      const readNames = findBooksRead(booksList);
+
+      // מביאים משתמשים
+      const rawUsers = await fetchRandomUsers(12);
+
+      // ממפים ל-Member
+      const mapped: Member[] = rawUsers.map((u, i) =>
+        mapToMember(u, i, readNames.slice(0, 3)) // לדוגמה: 0–3 ספרים לכל משתמש
+      );
+
+      if (!cancelled) {
+        setMemberList(prev => dedupeById([...prev, ...mapped]));
+      }
+    })();
+
+    return () => { cancelled = true; };
+  }, [booksList, setMemberList]);
+
+  return null; // קומפוננטת טעינה בלבד
+};
+
+export default FetchUsers;
