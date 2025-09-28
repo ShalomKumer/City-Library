@@ -1,11 +1,22 @@
 import { useContext, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { myContext } from "../components/Context";
-import type { Member } from "../components/types";
 import Header from "../components/Header";
 import { toast } from "react-toastify";
-
+import type { Book } from "../components/types";
 import "../styles/UserDit.css";
+
+function findBook (book: string, list: Book[] ): string | null{
+  if(! book || !Array.isArray(list)) return null
+  const norm = (s: string) => s.trim().toLowerCase();
+  let bo = list.find((b: Book) => norm(b.bookName) === norm(book))
+  if (!bo){
+    toast.error(`Book Not Found ! :(`)
+  }
+  return bo?.id ?? null
+}
+
+
 
 const UserProfile: React.FC = () => {
   const { id: userID } = useParams<{ id: string }>();
@@ -13,10 +24,9 @@ const UserProfile: React.FC = () => {
   const ctx = useContext(myContext);
   if (!ctx) return null;
 
-  const { memberList } = ctx;
+  const { memberList, booksList } = ctx;
   const oneUser = memberList.find((u) => String(u.id) === String(userID));
 
-  // לא קוראים useEffect בתוך תנאי! קוראים פעם אחת ומגיבים ל-oneUser
   useEffect(() => {
     if (!oneUser) {
       toast.error("User Not Found :(");
@@ -24,7 +34,6 @@ const UserProfile: React.FC = () => {
   }, [oneUser]);
 
   if (!oneUser) {
-    // אפשר לשים גם כפתור Back לבית
     return (
       <>
         <Header />
@@ -39,8 +48,6 @@ const UserProfile: React.FC = () => {
       </>
     );
   }
-
-  // בניית שם מלא – תואם לטייפ שמיפית {name:{title,first,last}}
   const fullName = [oneUser.name?.title, oneUser.name?.first, oneUser.name?.last]
     .filter(Boolean)
     .join(" ");
@@ -48,7 +55,6 @@ const UserProfile: React.FC = () => {
   return (
     <>
       <Header />
-
       <div className="userpage-container">
         <section className="userpage-card">
           <div className="userpage-left">
@@ -75,19 +81,34 @@ const UserProfile: React.FC = () => {
             <div className="chips">
               {(oneUser.booksRead ?? []).length === 0 ? (
                 <span className="chip chip--muted">No books yet</span>
-              ) : (
+              ) 
+              : (
                 (oneUser.booksRead ?? []).map((title, i) => (
-                  <span className="chip" key={i} title={title}>
+                  <button
+                    key={`${title}-${i}`}
+                    className="chip"
+                    type="button"
+                    title={title}
+                    onClick={() => {
+                      const id = findBook(title, booksList);
+                      if (!id) return;
+                      nav(`/book/${id}`);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        const id = findBook(title, booksList);
+                        if (!id) return;
+                        nav(`/book/${id}`);
+                      }
+                    }}
+                  >
                     {title}
-                  </span>
+                  </button>
+                
                 ))
               )}
             </div>
-
-            {/* דוגמה לעוד מידע עתידי: 
-            <h3 className="section-title">Borrowed</h3>
-            <div className="chips">...</div>
-            */}
           </div>
         </section>
 
