@@ -2,22 +2,26 @@ import { useContext, useEffect } from "react";
 import { myContext } from "./Context";
 import type { Member, Book } from "./types";
 
+function pickRandomBooks(books: Book[], min = 2, max = 8): string[] {
+  if (!books.length) return [];
+  const count = Math.floor(Math.random() * (max - min + 1)) + min;
 
+  const result: string[] = [];
+  const used = new Set<number>();
 
-function findBooksRead(books: Book[]): string[] {
-  // return books.filter(b => b.read).map(b => b.bookName);
-  let amount  = Math.round(Math.random() * (8 - 2) + 2 )
-  let listBooksR: string [] = []
-  for (let i = 0 ; i < amount ; i++ ){
-    let idx :number[] = []
-    let index = Math.round(Math.random() * (books.length - 1) + 1 )
-    idx.push(index)
-    if(!idx.includes(index)){
-      listBooksR.push(books[index]?.bookName ?? `not found book ${i + 1 }:-(`)
-    }
+  for (let i = 0; i < count && used.size < books.length; i++) {
+    let idx: number;
+    do {
+      idx = Math.floor(Math.random() * books.length);
+    } while (used.has(idx));
+    used.add(idx);
+
+    result.push(books[idx].bookName);
   }
-  return listBooksR
+
+  return result;
 }
+
 
 function mapToMember(user: any, idx: number, booksRead: string[]): Member {
   return {
@@ -39,46 +43,43 @@ async function fetchRandomUsers(results: number): Promise<any[]> {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     return Array.isArray(data?.results) ? data.results : [];
-  }
+  } 
   catch (err) {
     console.error("fetchRandomUsers error:", err);
     return [];
   }
 }
-function dedupeById(list: Member[]): Member[] {
-  const seen = new Set<string | number>();
-  const out: Member[] = [];
-  for (const m of list) {
-    if (!seen.has(m.id)) {
-      seen.add(m.id);
-      out.push(m);
-    }
+function mergeByIdPreferNew(prev: Member[], next: Member[]): Member[] {
+  const byId = new Map<string | number, Member>();
+  for (const m of prev) byId.set(m.id, m);
+  for (const m of next) {
+    const old = byId.get(m.id);
+    byId.set(m.id, { ...old, ...m });
   }
-  return out;
+  return Array.from(byId.values());
 }
 
 const FetchUsers: React.FC = () => {
   const ctx = useContext(myContext);
   if (!ctx) return null;
-  const { setMemberList, booksList, memberList } = ctx;
+  const { setMemberList, booksList } = ctx;
 
   useEffect(() => {
+    if (!booksList || booksList.length === 0) return;
     let cancelled = false;
     (async () => {
-      const readNames = findBooksRead(booksList);
       const rawUsers = await fetchRandomUsers(30);
       const mapped: Member[] = rawUsers.map((u, i) =>
-        mapToMember(u, i, readNames)
+        mapToMember(u, i, pickRandomBooks(booksList))
       );
 
       if (!cancelled) {
-        setMemberList(prev => dedupeById([...prev, ...mapped]));
+        setMemberList(prev => mergeByIdPreferNew(prev, mapped));
       }
     })();
 
     return () => { cancelled = true; };
   }, [booksList, setMemberList]);
-  console.log(memberList)
 
   return null;
 };

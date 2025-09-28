@@ -1,153 +1,178 @@
 /* ===== UserItem.css ===== */
 
+/* צבעים רכים וקצת עומק */
 :root{
-  --u-surface: #ffffff;
-  --u-surface-2: #fafbff;
-  --u-text: #0f172a;     /* slate-900 */
-  --u-muted: #64748b;    /* slate-500/600 */
-  --u-border: #e6e9f0;
-  --u-shadow: 0 6px 16px rgba(15,23,42,.08);
-  --u-shadow-hover: 0 12px 26px rgba(15,23,42,.14);
-  --u-accent: #6aa6ff;
+  --ui-surface: #ffffff;
+  --ui-surface-2: #fafbff;
+  --ui-text: #0f172a;
+  --ui-muted: #64748b;
+  --ui-border: #e6e9f0;
+  --ui-shadow: 0 6px 16px rgba(15,23,42,.08);
+  --ui-shadow-hover: 0 12px 26px rgba(15,23,42,.14);
+  --ui-accent: #6aa6ff;
 }
 
 @media (prefers-color-scheme: dark){
   :root{
-    --u-surface: #111827;
-    --u-surface-2: #0f172a;
-    --u-text: #e5e7eb;
-    --u-muted: #9aa7b7;
-    --u-border: #1f2a3a;
-    --u-shadow: 0 6px 18px rgba(0,0,0,.35);
-    --u-shadow-hover: 0 14px 34px rgba(0,0,0,.45);
-    --u-accent: #8dbbff;
+    --ui-surface: #111827;
+    --ui-surface-2: #0f172a;
+    --ui-text: #e5e7eb;
+    --ui-muted: #9aa7b7;
+    --ui-border: #1f2a3a;
+    --ui-shadow: 0 6px 18px rgba(0,0,0,.35);
+    --ui-shadow-hover: 0 14px 34px rgba(0,0,0,.45);
+    --ui-accent: #8dbbff;
   }
 }
 
+/* כרטיס עוטף – אנימציית כניסה עדינה */
 .user-card{
   width: 100%;
-  /* אין max-width כדי שהגריד של הרשימה ישלוט */
   opacity: 0;
   transform: translateY(8px) scale(.985);
-  animation: user-in 320ms ease forwards;
+  animation: usercard-in 240ms ease forwards;
 }
-@keyframes user-in{ to{ opacity:1; transform: translateY(0) scale(1);} }
+@keyframes usercard-in{ to{ opacity:1; transform: translateY(0) scale(1);} }
 
+/* הכפתור שהוא כל הכרטיס (לינק) */
 .user-card__btn{
   display: grid;
+  grid-template-rows: auto 1fr;
   gap: 14px;
   width: 100%;
   text-align: left;
-  border: 1px solid var(--u-border);
+  background: linear-gradient(180deg, var(--ui-surface), var(--ui-surface-2));
+  color: var(--ui-text);
+  border: 1px solid var(--ui-border);
   border-radius: 16px;
-  background: linear-gradient(180deg, var(--u-surface), var(--u-surface-2));
-  box-shadow: var(--u-shadow);
+  box-shadow: var(--ui-shadow);
   padding: 14px;
   cursor: pointer;
+  overflow: hidden;               /* מונע זליגות */
   transition: transform .2s ease, box-shadow .22s ease, border-color .22s ease;
 }
-
 .user-card__btn:hover{
   transform: translateY(-4px);
-  box-shadow: var(--u-shadow-hover);
-  border-color: color-mix(in oklab, var(--u-border) 75%, var(--u-accent));
+  box-shadow: var(--ui-shadow-hover);
+  border-color: color-mix(in oklab, var(--ui-border) 75%, var(--ui-accent));
+}
+.user-card__btn:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in oklab, #60a5fa 50%, white);
 }
 
+/* ראש הכרטיס: אווטאר + זהות */
 .user-card__top{
   display: grid;
-  grid-template-columns: 64px 1fr;   /* אווטאר קטן + מידע */
+  grid-template-columns: 64px 1fr;
   gap: 14px;
   align-items: center;
+  min-width: 0;                  /* חשוב נגד overflow בגריד */
 }
 
+/* אווטאר עגול, גודל קבוע */
 .user-card__avatar{
   width: 64px;
   height: 64px;
+  min-width: 64px;
   border-radius: 50%;
   overflow: hidden;
-  border: 1px solid var(--u-border);
+  border: 1px solid var(--ui-border);
   background: #eef2f7;
   box-shadow: 0 2px 8px rgba(15,23,42,.06);
 }
-
 .user-card__avatar img{
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
+/* זהות (שם + מטא) */
 .user-card__identity{
   display: grid;
   gap: 6px;
+  min-width: 0;                  /* מאפשר אליפסיס */
 }
-
 .user-card__name{
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1.08rem;
   line-height: 1.25;
-  color: var(--u-text);
   letter-spacing: .2px;
+  color: var(--ui-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-
 .user-card__meta{
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  min-width: 0;
 }
-
 .user-card__pill{
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  max-width: 100%;
   padding: 5px 10px;
   border-radius: 999px;
-  font-size: .85rem;
+  font-size: .84rem;
   font-weight: 600;
-  color: color-mix(in oklab, var(--u-text) 70%, var(--u-muted));
-  background: color-mix(in oklab, var(--u-surface) 92%, white);
-  border: 1px solid var(--u-border);
+  color: color-mix(in oklab, var(--ui-text) 70%, var(--ui-muted));
+  background: color-mix(in oklab, var(--ui-surface) 92%, white);
+  border: 1px solid var(--ui-border);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;       /* חותך אימיילים ארוכים */
 }
 
-/* ספרים שנקראו */
+/* ספרים שנקראו – אזור תחתון */
 .user-card__books{
   display: grid;
   gap: 8px;
-  border-top: 1px dashed var(--u-border);
+  border-top: 1px dashed var(--ui-border);
   padding-top: 10px;
+  min-width: 0;
 }
-
 .user-card__section-title{
-  color: var(--u-muted);
+  color: var(--ui-muted);
   font-size: .85rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: .2px;
+  margin: 0;
 }
 
+/* צ'יפים – נשברים לשורות, לא בורחים מהכרטיס */
 .user-card__chips{
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  min-width: 0;
 }
-
 .user-card__chip{
   display: inline-flex;
   align-items: center;
   max-width: 100%;
   padding: 6px 10px;
   border-radius: 10px;
-  font-size: .85rem;
+  font-size: .86rem;
   line-height: 1.2;
-  color: var(--u-text);
-  background: color-mix(in oklab, var(--u-surface) 94%, white);
-  border: 1px solid var(--u-border);
+  color: var(--ui-text);
+  background: color-mix(in oklab, var(--ui-surface) 94%, white);
+  border: 1px solid var(--ui-border);
   box-shadow: 0 2px 6px rgba(15,23,42,.06);
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis;       /* חותך שמות ספרים ארוכים */
 }
-
 .user-card__chip--more{
-  color: var(--u-muted);
+  color: var(--ui-muted);
   background: transparent;
   border-style: dashed;
+}
+
+/* מובייל קטן – ריווחים עדינים */
+@media (max-width: 420px){
+  .user-card__btn{ padding: 12px; }
+  .user-card__top{ grid-template-columns: 56px 1fr; gap: 10px; }
+  .user-card__avatar{ width: 56px; height: 56px; min-width: 56px; }
 }

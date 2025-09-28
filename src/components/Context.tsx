@@ -1,6 +1,8 @@
-import { createContext, useState, useMemo, useContext, } from "react";
+import { createContext, useState, useMemo, useContext, useEffect, } from "react";
 import type { ReactNode } from "react";
 import type { Review, Book, Member } from "./types";
+import FetchBooks from "./FetchBooks";
+import FetchUsers from "./fatchUsers";
 
 type ContextType = {
   book: Book | undefined;
@@ -55,7 +57,13 @@ const Context: React.FC<ProviderProps> = ({ children }) => {
     [book, member, review, booksList, memberList, reviewList]
   );
 
-  return <myContext.Provider value={value}>{children}</myContext.Provider>;
+   return (
+    <myContext.Provider value={value}>
+      <FetchBooks />
+      {booksList.length > 0 && <FetchUsers />}
+      {children}
+    </myContext.Provider>
+  );
 };
 
 export default Context;

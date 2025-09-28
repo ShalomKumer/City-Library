@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { myContext } from "./Context";
 import UserItem from "./UserItem";
-import FetchUsers from "../components/fatchUsers";
+// import FetchUsers from "../components/fatchUsers";
 
 const UserListA = () => {
   let ctx = useContext(myContext);
@@ -9,8 +9,8 @@ const UserListA = () => {
   const { memberList } = ctx;
   return (
     <>
-    <FetchUsers />
-    
+    {/* <FetchUsers /> */}
+
       <div className="allBookList">
         {memberList.map((u, idx) => (
           <UserItem key={u.id ?? idx} u={u} />

@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { myContext } from "../components/Context";
 import BookItem from "./BookItem";
-import FetchBooks from "./FetchBooks"
+// import FetchBooks from "./FetchBooks"
 import '../styles/BookList.css'
 
 const BookList = () => {
@@ -11,7 +11,7 @@ const BookList = () => {
 
   return (
     <>
-      <FetchBooks />
+      {/* <FetchBooks /> */}
       <div className="allBookList">
         {booksList.map((b, idx) => (
           <BookItem key={b.id ?? idx} b={b} />
