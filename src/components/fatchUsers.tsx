@@ -3,16 +3,17 @@ import { myContext } from "./Context";
 import type { Member, Book } from "./types";
 
 
+
 function findBooksRead(books: Book[]): string[] {
   // return books.filter(b => b.read).map(b => b.bookName);
   let amount  = Math.round(Math.random() * (8 - 2) + 2 )
   let listBooksR: string [] = []
-  for (let i = 0 ; i < amount ;i++ ){
+  for (let i = 0 ; i < amount ; i++ ){
     let idx :number[] = []
     let index = Math.round(Math.random() * (books.length - 1) + 1 )
     idx.push(index)
     if(!idx.includes(index)){
-      listBooksR.push(books[index].bookName)
+      listBooksR.push(books[index]?.bookName ?? `not found book ${i + 1 }:-(`)
     }
   }
   return listBooksR
@@ -59,7 +60,7 @@ function dedupeById(list: Member[]): Member[] {
 const FetchUsers: React.FC = () => {
   const ctx = useContext(myContext);
   if (!ctx) return null;
-  const { setMemberList, booksList } = ctx;
+  const { setMemberList, booksList, memberList } = ctx;
 
   useEffect(() => {
     let cancelled = false;
@@ -77,6 +78,7 @@ const FetchUsers: React.FC = () => {
 
     return () => { cancelled = true; };
   }, [booksList, setMemberList]);
+  console.log(memberList)
 
   return null;
 };

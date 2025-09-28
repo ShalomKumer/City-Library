@@ -12,7 +12,6 @@ const BookList = () => {
   return (
     <>
       <FetchBooks />
-
       <div className="allBookList">
         {booksList.map((b, idx) => (
           <BookItem key={b.id ?? idx} b={b} />

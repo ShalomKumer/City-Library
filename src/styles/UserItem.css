@@ -1,0 +1,153 @@
+/* ===== UserItem.css ===== */
+
+:root{
+  --u-surface: #ffffff;
+  --u-surface-2: #fafbff;
+  --u-text: #0f172a;     /* slate-900 */
+  --u-muted: #64748b;    /* slate-500/600 */
+  --u-border: #e6e9f0;
+  --u-shadow: 0 6px 16px rgba(15,23,42,.08);
+  --u-shadow-hover: 0 12px 26px rgba(15,23,42,.14);
+  --u-accent: #6aa6ff;
+}
+
+@media (prefers-color-scheme: dark){
+  :root{
+    --u-surface: #111827;
+    --u-surface-2: #0f172a;
+    --u-text: #e5e7eb;
+    --u-muted: #9aa7b7;
+    --u-border: #1f2a3a;
+    --u-shadow: 0 6px 18px rgba(0,0,0,.35);
+    --u-shadow-hover: 0 14px 34px rgba(0,0,0,.45);
+    --u-accent: #8dbbff;
+  }
+}
+
+.user-card{
+  width: 100%;
+  /* אין max-width כדי שהגריד של הרשימה ישלוט */
+  opacity: 0;
+  transform: translateY(8px) scale(.985);
+  animation: user-in 320ms ease forwards;
+}
+@keyframes user-in{ to{ opacity:1; transform: translateY(0) scale(1);} }
+
+.user-card__btn{
+  display: grid;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--u-border);
+  border-radius: 16px;
+  background: linear-gradient(180deg, var(--u-surface), var(--u-surface-2));
+  box-shadow: var(--u-shadow);
+  padding: 14px;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .22s ease, border-color .22s ease;
+}
+
+.user-card__btn:hover{
+  transform: translateY(-4px);
+  box-shadow: var(--u-shadow-hover);
+  border-color: color-mix(in oklab, var(--u-border) 75%, var(--u-accent));
+}
+
+.user-card__top{
+  display: grid;
+  grid-template-columns: 64px 1fr;   /* אווטאר קטן + מידע */
+  gap: 14px;
+  align-items: center;
+}
+
+.user-card__avatar{
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--u-border);
+  background: #eef2f7;
+  box-shadow: 0 2px 8px rgba(15,23,42,.06);
+}
+
+.user-card__avatar img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-card__identity{
+  display: grid;
+  gap: 6px;
+}
+
+.user-card__name{
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.25;
+  color: var(--u-text);
+  letter-spacing: .2px;
+}
+
+.user-card__meta{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.user-card__pill{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: .85rem;
+  font-weight: 600;
+  color: color-mix(in oklab, var(--u-text) 70%, var(--u-muted));
+  background: color-mix(in oklab, var(--u-surface) 92%, white);
+  border: 1px solid var(--u-border);
+}
+
+/* ספרים שנקראו */
+.user-card__books{
+  display: grid;
+  gap: 8px;
+  border-top: 1px dashed var(--u-border);
+  padding-top: 10px;
+}
+
+.user-card__section-title{
+  color: var(--u-muted);
+  font-size: .85rem;
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+
+.user-card__chips{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.user-card__chip{
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-size: .85rem;
+  line-height: 1.2;
+  color: var(--u-text);
+  background: color-mix(in oklab, var(--u-surface) 94%, white);
+  border: 1px solid var(--u-border);
+  box-shadow: 0 2px 6px rgba(15,23,42,.06);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-card__chip--more{
+  color: var(--u-muted);
+  background: transparent;
+  border-style: dashed;
+}

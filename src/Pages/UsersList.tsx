@@ -1,11 +1,12 @@
-import Header from "../components/Header"
-
+import Header from "../components/Header";
+import UserListA from "../components/UserListA";
 const UsersList = () => {
   return (
     <>
-    <Header />
+      <Header />
+      <UserListA />
     </>
-  )
-}
+  );
+};
 
-export default UsersList
+export default UsersList;

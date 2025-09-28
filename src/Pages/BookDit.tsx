@@ -20,7 +20,7 @@ const BookDit: React.FC = () => {
     useEffect(() => {
       toast.error("Book Not Found :(");
     }, []);
-    return <p className="error">Book Not Found : </p>;
+    return <p className="error">Book Not Found...</p>;
   }
 
   const fallbackImg =
