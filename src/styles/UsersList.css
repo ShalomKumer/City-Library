@@ -1,0 +1,190 @@
+/* ===== UsersList.css ===== */
+
+/* משתני בסיס */
+:root{
+  --ul-surface: #ffffff;
+  --ul-surface-2: #f7f9ff;
+  --ul-text: #0f172a;
+  --ul-muted: #64748b;
+  --ul-border: #e6e9f0;
+  --ul-shadow: 0 6px 16px rgba(15,23,42,.08);
+  --ul-shadow-hover: 0 12px 26px rgba(15,23,42,.14);
+  --ul-accent: #6aa6ff;
+  --ul-focus: #60a5fa;
+  --ul-danger: #ef4444;
+  --ul-success: #16a34a;
+}
+
+@media (prefers-color-scheme: dark){
+  :root{
+    --ul-surface: #111827;
+    --ul-surface-2: #0f172a;
+    --ul-text: #e5e7eb;
+    --ul-muted: #9aa7b7;
+    --ul-border: #1f2a3a;
+    --ul-shadow: 0 8px 22px rgba(0,0,0,.35);
+    --ul-shadow-hover: 0 16px 36px rgba(0,0,0,.45);
+    --ul-accent: #8dbbff;
+    --ul-focus: #93c5fd;
+  }
+}
+
+/* מעטפת עמוד */
+.userslist-container{
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 18px;
+}
+
+/* איזור עליון: כותרת/חיפוש/פילטרים */
+.userslist-header{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 16px;
+}
+@media (max-width: 720px){
+  .userslist-header{
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+}
+
+.userslist-title{
+  margin: 0;
+  font-size: clamp(1.3rem, 1.2vw + 1rem, 1.8rem);
+  color: var(--ul-text);
+}
+
+.users-toolbar{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.users-input{
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--ul-border);
+  background: var(--ul-surface);
+  color: var(--ul-text);
+  box-shadow: 0 2px 6px rgba(15,23,42,.04) inset;
+  min-width: 220px;
+}
+.users-select{
+  height: 40px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1px solid var(--ul-border);
+  background: var(--ul-surface);
+  color: var(--ul-text);
+}
+.users-btn{
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid var(--ul-border);
+  background: var(--ul-surface);
+  color: var(--ul-text);
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease;
+}
+.users-btn:hover{
+  transform: translateY(-1px);
+  box-shadow: var(--ul-shadow);
+  border-color: color-mix(in oklab, var(--ul-border) 75%, var(--ul-accent));
+}
+.users-btn--primary{
+  background: color-mix(in oklab, var(--ul-surface) 88%, var(--ul-accent));
+  border-color: color-mix(in oklab, var(--ul-border) 70%, var(--ul-accent));
+}
+
+/* גריד הכרטיסים (מתאים ל-.user-card) */
+.users-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  align-content: start;
+  min-height: 10px; /* מונע קריסה בזמן טעינה */
+}
+
+/* כרטיסים נכנסים – אנימציה אופציונלית (לא חובה) */
+.users-grid > *[data-animate="in"]{
+  animation: users-item-in 260ms ease;
+}
+@keyframes users-item-in{
+  from { opacity: 0; transform: translateY(8px) scale(.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .users-grid > *{
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* פס אינפורמציה (ספירה/מצב) */
+.userslist-info{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ul-muted);
+  font-size: .95rem;
+  margin: 8px 2px 14px;
+}
+
+/* מצב ריק / שגיאה */
+.userslist-empty,
+.userslist-error{
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 42px 0;
+  border: 1px dashed var(--ul-border);
+  border-radius: 14px;
+  background: color-mix(in oklab, var(--ul-surface) 96%, white);
+  color: var(--ul-muted);
+}
+.userslist-error{ color: var(--ul-danger); border-style: solid; }
+
+/* פאג'ינציה / ניווט עמודים */
+.userslist-footer{
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 18px 0 10px;
+}
+.page-btn{
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--ul-border);
+  background: var(--ul-surface);
+  color: var(--ul-text);
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
+}
+.page-btn:hover{
+  transform: translateY(-1px);
+  box-shadow: var(--ul-shadow);
+}
+.page-btn[aria-current="page"],
+.page-btn--active{
+  background: color-mix(in oklab, var(--ul-surface) 86%, var(--ul-accent));
+  border-color: color-mix(in oklab, var(--ul-border) 60%, var(--ul-accent));
+}
+
+/* עוזרים קטנים */
+.hidden{
+  display: none !important;
+}
+.nowrap{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

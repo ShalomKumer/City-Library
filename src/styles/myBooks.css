@@ -1,82 +1,150 @@
 /* =======================
-   MyBooks Page Styles
+   MyBooks Page Styles (renewed)
    ======================= */
 
+:root{
+  --mb-surface: #ffffff;
+  --mb-page: #f7f8fb;
+  --mb-text: #0f172a;
+  --mb-muted: #64748b;
+  --mb-border: #e6e9f0;
+  --mb-primary: #0077cc;
+  --mb-primary-dark: #005fa3;
+  --mb-success: #4caf50;
+  --mb-success-dark: #3d8b40;
+  --mb-shadow: 0 6px 16px rgba(15,23,42,.08);
+}
+
+@media (prefers-color-scheme: dark){
+  :root{
+    --mb-surface: #111827;
+    --mb-page: #0f172a;
+    --mb-text: #e5e7eb;
+    --mb-muted: #9aa7b7;
+    --mb-border: #1f2a3a;
+    --mb-primary: #3b82f6;
+    --mb-primary-dark: #2563eb;
+    --mb-success: #22c55e;
+    --mb-success-dark: #16a34a;
+    --mb-shadow: 0 8px 22px rgba(0,0,0,.35);
+  }
+}
+
+/* עמוד */
 .mybooks-container {
   padding: 2rem 1rem;
   max-width: 1200px;
   margin: 0 auto;
+  color: var(--mb-text);
+  background: transparent;
 }
 
+/* כותרת */
 .mybooks-title {
-  font-size: 2.2rem;
+  font-size: clamp(1.6rem, 1.2vw + 1.2rem, 2.2rem);
   text-align: center;
-  margin-bottom: 2rem;
-  color: #333;
+  margin-bottom: 1.6rem;
+  color: var(--mb-text);
 }
 
+/* מצב ריק */
 .mybooks-empty {
   text-align: center;
-  margin-top: 4rem;
+  margin: 3rem 0 2rem;
+  padding: 2rem 1rem;
+  border: 1px dashed var(--mb-border);
+  border-radius: 14px;
+  background: color-mix(in oklab, var(--mb-surface) 96%, white);
+  box-shadow: var(--mb-shadow);
 }
-
 .mybooks-empty h2 {
-  font-size: 1.6rem;
-  color: #555;
+  font-size: clamp(1.2rem, .8vw + 1rem, 1.6rem);
+  color: var(--mb-muted);
+  margin: 0 0 .75rem;
 }
-
 .mybooks-empty button {
-  margin-top: 1rem;
-  padding: 0.6rem 1.4rem;
+  margin-top: .75rem;
+  padding: .6rem 1.4rem;
   font-size: 1rem;
-  background: #0077cc;
+  background: var(--mb-primary);
   color: #fff;
-  border: none;
-  border-radius: 6px;
+  border: 1px solid color-mix(in oklab, var(--mb-border) 70%, var(--mb-primary));
+  border-radius: 10px;
   cursor: pointer;
-  transition: background 0.25s ease;
+  transition: transform .16s ease, background .22s ease, box-shadow .22s ease;
 }
-
 .mybooks-empty button:hover {
-  background: #005fa3;
+  background: var(--mb-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--mb-shadow);
 }
 
-.allBookList {
+/* גריד הכרטיסים */
+.allBookList{
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
   padding: 1rem 0;
+  align-items: stretch;
+  align-content: start;
+  min-height: 10px;
 }
 
+/* סטאגר עדין לאופציונלי — אם תרצה אנימציה הוסף data-animate="in" ל-.card */
+.allBookList .card{
+  opacity: 1;
+  transform: none;
+}
+.allBookList .card[data-animate="in"]{
+  animation: mb-fadeInUp 360ms ease both;
+}
+.allBookList .card[data-animate="in"]:nth-child(1){ animation-delay: 40ms; }
+.allBookList .card[data-animate="in"]:nth-child(2){ animation-delay: 80ms; }
+.allBookList .card[data-animate="in"]:nth-child(3){ animation-delay: 120ms; }
+.allBookList .card[data-animate="in"]:nth-child(4){ animation-delay: 160ms; }
+.allBookList .card[data-animate="in"]:nth-child(5){ animation-delay: 200ms; }
+.allBookList .card[data-animate="in"]:nth-child(6){ animation-delay: 240ms; }
+@keyframes mb-fadeInUp {
+  from { opacity: 0; transform: translateY(12px) scale(.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* כפתור "חזרה הביתה" */
 .back-home-btn {
   display: block;
   margin: 2rem auto 0;
-  padding: 0.8rem 1.6rem;
-  font-size: 1.1rem;
-  background: #4caf50;
+  padding: .8rem 1.6rem;
+  font-size: 1.05rem;
+  background: var(--mb-success);
   color: #fff;
-  border: none;
-  border-radius: 8px;
+  border: 1px solid color-mix(in oklab, var(--mb-border) 70%, var(--mb-success));
+  border-radius: 10px;
   cursor: pointer;
-  transition: background 0.25s ease;
+  transition: transform .16s ease, background .22s ease, box-shadow .22s ease;
 }
-
 .back-home-btn:hover {
-  background: #3d8b40;
+  background: var(--mb-success-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--mb-shadow);
 }
 
-/* ספרים שמוצגים דרך BookItem יקבלו אנימציה קלה */
-.allBookList > * {
-  animation: fadeInUp 0.6s ease;
+/* רספונסיביות */
+@media (min-width: 1280px){
+  .allBookList{ gap: 1.5rem; }
 }
-
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(15px);
+@media (max-width: 380px){
+  .allBookList{
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
+}
+
+/* נגישות – הפחתת אנימציות */
+@media (prefers-reduced-motion: reduce){
+  .allBookList .card{
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
   }
 }

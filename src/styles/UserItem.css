@@ -1,15 +1,16 @@
-/* ===== UserItem.css ===== */
+/* ===== UserItem.css (renewed, refined) ===== */
 
-/* צבעים רכים וקצת עומק */
+/* צבעים ושכבות */
 :root{
   --ui-surface: #ffffff;
-  --ui-surface-2: #fafbff;
+  --ui-surface-2: #f7f9ff;
   --ui-text: #0f172a;
   --ui-muted: #64748b;
   --ui-border: #e6e9f0;
   --ui-shadow: 0 6px 16px rgba(15,23,42,.08);
   --ui-shadow-hover: 0 12px 26px rgba(15,23,42,.14);
   --ui-accent: #6aa6ff;
+  --ui-focus: #60a5fa;
 }
 
 @media (prefers-color-scheme: dark){
@@ -19,23 +20,42 @@
     --ui-text: #e5e7eb;
     --ui-muted: #9aa7b7;
     --ui-border: #1f2a3a;
-    --ui-shadow: 0 6px 18px rgba(0,0,0,.35);
-    --ui-shadow-hover: 0 14px 34px rgba(0,0,0,.45);
+    --ui-shadow: 0 8px 22px rgba(0,0,0,.35);
+    --ui-shadow-hover: 0 16px 36px rgba(0,0,0,.45);
     --ui-accent: #8dbbff;
+    --ui-focus: #93c5fd;
   }
 }
 
-/* כרטיס עוטף – אנימציית כניסה עדינה */
+/* כרטיס עוטף – כברירת מחדל נראה */
 .user-card{
   width: 100%;
-  opacity: 0;
-  transform: translateY(8px) scale(.985);
-  animation: usercard-in 240ms ease forwards;
+  opacity: 1;
+  transform: none;
+  will-change: transform, box-shadow; /* NEW: שיפור ביצועים על hover */
 }
-@keyframes usercard-in{ to{ opacity:1; transform: translateY(0) scale(1);} }
 
-/* הכפתור שהוא כל הכרטיס (לינק) */
+/* אנימציית כניסה אופציונלית */
+.user-card[data-animate="in"]{
+  animation: usercard-in 260ms ease forwards;
+}
+@keyframes usercard-in{
+  from { opacity: 0; transform: translateY(8px) scale(.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .user-card, .user-card *{
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* הכפתור שהוא כל הכרטיס */
 .user-card__btn{
+  all: unset;
+  box-sizing: border-box;
   display: grid;
   grid-template-rows: auto 1fr;
   gap: 14px;
@@ -48,17 +68,23 @@
   box-shadow: var(--ui-shadow);
   padding: 14px;
   cursor: pointer;
-  overflow: hidden;               /* מונע זליגות */
-  transition: transform .2s ease, box-shadow .22s ease, border-color .22s ease;
+  overflow: hidden;
+  transition: transform .18s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease;
 }
 .user-card__btn:hover{
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   box-shadow: var(--ui-shadow-hover);
   border-color: color-mix(in oklab, var(--ui-border) 75%, var(--ui-accent));
 }
+.user-card__btn:active{            /* NEW: פידבק לחיצה עדין */
+  transform: translateY(-1px) scale(.998);
+}
 .user-card__btn:focus-visible{
   outline: none;
-  box-shadow: 0 0 0 3px color-mix(in oklab, #60a5fa 50%, white);
+  box-shadow:
+    0 0 0 3px color-mix(in oklab, var(--ui-focus) 60%, white),
+    var(--ui-shadow-hover);
+  border-color: color-mix(in oklab, var(--ui-border) 65%, var(--ui-focus));
 }
 
 /* ראש הכרטיס: אווטאר + זהות */
@@ -67,10 +93,11 @@
   grid-template-columns: 64px 1fr;
   gap: 14px;
   align-items: center;
-  min-width: 0;                  /* חשוב נגד overflow בגריד */
+  min-width: 0;
+  direction: ltr; /* NEW: מונע בלגן ב־RTL עבור אימיילים/מספרים */
 }
 
-/* אווטאר עגול, גודל קבוע */
+/* אווטאר */
 .user-card__avatar{
   width: 64px;
   height: 64px;
@@ -85,23 +112,25 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: translateZ(0);
 }
 
 /* זהות (שם + מטא) */
 .user-card__identity{
   display: grid;
   gap: 6px;
-  min-width: 0;                  /* מאפשר אליפסיס */
+  min-width: 0;
 }
 .user-card__name{
   margin: 0;
-  font-size: 1.08rem;
+  font-size: clamp(1rem, .3vw + .95rem, 1.12rem); /* NEW: טיפוגרפיה רספונסיבית */
   line-height: 1.25;
   letter-spacing: .2px;
   color: var(--ui-text);
-  white-space: nowrap;
+  display: -webkit-box;            /* NEW: 2 שורות עם חיתוך */
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 .user-card__meta{
   display: flex;
@@ -122,10 +151,11 @@
   border: 1px solid var(--ui-border);
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;       /* חותך אימיילים ארוכים */
+  text-overflow: ellipsis;
+  direction: ltr; /* NEW: אימיילים/מספרים לא “מתהפכים” ב־RTL */
 }
 
-/* ספרים שנקראו – אזור תחתון */
+/* אזור ספרים */
 .user-card__books{
   display: grid;
   gap: 8px;
@@ -141,7 +171,7 @@
   margin: 0;
 }
 
-/* צ'יפים – נשברים לשורות, לא בורחים מהכרטיס */
+/* צ'יפים */
 .user-card__chips{
   display: flex;
   flex-wrap: wrap;
@@ -162,7 +192,22 @@
   box-shadow: 0 2px 6px rgba(15,23,42,.06);
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;       /* חותך שמות ספרים ארוכים */
+  text-overflow: ellipsis;
+  transition: transform .14s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease;
+}
+.user-card__chip:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(15,23,42,.12);
+  border-color: color-mix(in oklab, var(--ui-border) 75%, var(--ui-accent));
+}
+.user-card__chip:active{ /* NEW: פידבק קל בלחיצה */
+  transform: translateY(0);
+  box-shadow: 0 3px 10px rgba(15,23,42,.10);
+}
+.user-card__chip:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ui-focus) 60%, white);
+  border-color: color-mix(in oklab, var(--ui-border) 65%, var(--ui-focus));
 }
 .user-card__chip--more{
   color: var(--ui-muted);

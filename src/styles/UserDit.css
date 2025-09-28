@@ -1,148 +1,248 @@
-/* ===== UserDit.css ===== */
+/* ===== BookDit.css – Fresh Minimal ===== */
 
-/* מעטפת עמוד */
-.userpage-container{
+/* מעטפת הדף */
+.container{
   max-width: 1100px;
   margin: 24px auto;
   padding: 0 18px;
+  box-sizing: border-box;
 }
 
-/* כרטיס פרופיל – גריד מסודר, בלי זליגות */
-.userpage-card{
+/* כרטיס פרטי ספר: תמונה | תוכן */
+.details{
   display: grid;
-  grid-template-columns: 340px 1fr;
-  gap: 22px;
-  background: linear-gradient(180deg, #fff, #fafbff);
+  grid-template-columns: 240px 1fr;          /* תמונה קטנה יותר */
+  gap: 20px;
+  background: #fff;
   border: 1px solid #e6e9f0;
-  border-radius: 16px;
-  box-shadow: 0 6px 16px rgba(15,23,42,.08);
+  border-radius: 14px;
+  box-shadow: 0 8px 22px rgba(0,0,0,.06);
   padding: 16px;
-  overflow: hidden;             /* מונע זליגות */
+  overflow: hidden;
+  animation: details-in .28s ease both;
 }
-@media (prefers-color-scheme: dark){
-  .userpage-card{
-    background: linear-gradient(180deg, #111827, #0f172a);
-    border-color: #1f2a3a;
-    box-shadow: 0 8px 22px rgba(0,0,0,.35);
-  }
+
+@keyframes details-in{
+  from{ opacity:0; transform: translateY(8px) }
+  to  { opacity:1; transform: none }
 }
+
 @media (max-width: 920px){
-  .userpage-card{
-    grid-template-columns: 1fr;
-  }
+  .details{ grid-template-columns: 1fr; }
 }
 
-/* צד שמאל: אווטאר + מידע זהות */
-.userpage-left{
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 14px;
-  align-items: center;
-  min-width: 0;
-}
-@media (max-width: 520px){
-  .userpage-left{
-    grid-template-columns: 1fr;
-    justify-items: center;
-    text-align: center;
-  }
-}
-
-.userpage-avatar{
-  width: 120px;
-  height: 120px;
-  min-width: 120px;
-  border-radius: 50%;
-  overflow: hidden;
+/* טור תמונה */
+.img{
   border: 1px solid #e6e9f0;
-  background: #eef2f7;
-  box-shadow: 0 2px 10px rgba(15,23,42,.06);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f1f5f9;
+  box-shadow: 0 2px 10px rgba(0,0,0,.06);
 }
-.userpage-avatar img{
+.img img{
+  display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 5 / 7;                    /* פחות גבוה */
   object-fit: cover;
+  transform: scale(1.01);
+  transition: transform .25s ease;
 }
+.details:hover .img img{ transform: scale(1.035); }
 
-.userpage-meta{
-  display: grid;
-  gap: 6px;
-  align-content: start;
-  min-width: 0;
-}
-.userpage-name{
-  margin: 0;
-  font-size: clamp(1.2rem, 1.1vw + .9rem, 1.6rem);
-  line-height: 1.25;
-  color: #0f172a;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-@media (prefers-color-scheme: dark){
-  .userpage-name{ color: #e5e7eb; }
-}
-.userpage-pills{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  min-width: 0;
-}
-.pill{
-  display: inline-flex;
-  align-items: center;
-  max-width: 100%;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: .86rem;
-  font-weight: 600;
-  color: #475569;
-  background: #f3f6fb;
-  border: 1px solid #e6e9f0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;       /* חותך אימיילים ארוכים */
-}
-@media (prefers-color-scheme: dark){
-  .pill{
-    color: #9aa7b7;
-    background: #111827;
-    border-color: #1f2a3a;
-  }
-}
-
-/* צד ימין: רשימות (ספרים, השאלות, וכו') */
-.userpage-right{
+/* טקסט ארוך (כותרת + תיאור) */
+.long-text{
   display: grid;
   gap: 12px;
   align-content: start;
   min-width: 0;
 }
-.section-title{
+#bookName{
   margin: 0;
-  font-size: .95rem;
-  font-weight: 800;
-  letter-spacing: .2px;
-  color: #64748b;
+  font-size: clamp(1.2rem, 1.1vw + .9rem, 1.7rem);
+  line-height: 1.25;
+  color: #0f172a;
+  display: -webkit-box;                    /* עד 2 שורות */
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
-@media (prefers-color-scheme: dark){
-  .section-title{ color: #9aa7b7; }
+#description{
+  margin: 0;
+  color: #64748b;
+  font-size: 1rem;
+  line-height: 1.65;
+  border: 1px solid #e6e9f0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: #fafbff;
+  max-height: 22lh;                        /* מונע “גלילה אינסופית” */
+  overflow: auto;
 }
 
-/* צ'יפים של ספרים – נשברים לשורות, לא בורחים */
-.chips{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+/* טור פרטים נוספים */
+.other-details{
+  display: grid;
+  gap: 12px;
+  align-content: start;
   min-width: 0;
+  border-left: 1px dashed #e6e9f0;
+  padding-left: 16px;
 }
-.chip{
+@media (max-width: 920px){
+  .other-details{
+    border-left: 0;
+    border-top: 1px dashed #e6e9f0;
+    padding-left: 0;
+    padding-top: 14px;
+  }
+}
+
+/* מחבר + שנה */
+#author, #year{
+  margin: 0;
+  color: #0f172a;
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+#author{
+  font-size: 1rem;
+  background: #f3f6fb;
+  border: 1px solid #e6e9f0;
+  border-radius: 10px;
+  padding: 8px 10px;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#year{
+  font-size: .95rem;
+  color: #64748b;
+}
+
+/* מצב קריאה – כפתור */
+.read{ display:flex; align-items:center; }
+.read-btn{
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: .92rem;
+  font-weight: 800;
+  cursor: pointer;
+  border: 1px solid #e6e9f0;
+  background: #fff;
+  color: #0f172a;
+  transition: transform .16s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease, color .22s ease;
+}
+.read-btn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(0,0,0,.10);
+  border-color: #cbd5e1;
+}
+.read-btn.read-yes{
+  background: #22c55e;
+  color: #fff;
+  border-color: #16a34a;
+}
+.read-btn:disabled{
+  opacity: .85;
+  cursor: not-allowed;
+}
+
+/* דירוג (MUI Rating + מספר) */
+.score{
   display: inline-flex;
   align-items: center;
-  max-width: 100%;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid #e6e9f0;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  transition: transform .16s ease, box-shadow .22s ease;
+}
+.details:hover .score{
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0,0,0,.08);
+}
+.score h4{
+  margin: 0;
+  font-size: 1rem;
+  color: #0f172a;
+}
+
+/* הודעות עזר */
+.loading, .error{
+  margin: 24px 0;
+  text-align: center;
+  font-size: 1rem;
+}
+.loading{ color: #64748b; }
+.error{ color: #ef4444; }
+
+/* מצב כהה בסיסי */
+@media (prefers-color-scheme: dark){
+  .details{
+    background: #111827;
+    border-color: #1f2a3a;
+    box-shadow: 0 10px 26px rgba(0,0,0,.40);
+  }
+  .img{ border-color: #1f2a3a; background: #0f172a; }
+  #bookName{ color: #e5e7eb; }
+  #description{ background: #0f172a; border-color: #1f2a3a; color: #9aa7b7; }
+  #author{ background: #0f172a; border-color: #1f2a3a; color: #e5e7eb; }
+  #year{ color: #9aa7b7; }
+  .read-btn{ background: #0f172a; color:#e5e7eb; border-color:#1f2a3a; }
+  .score{ background: #0f172a; border-color: #1f2a3a; }
+  .score h4{ color: #e5e7eb; }
+}
+
+/* נגישות – פחות אנימציות */
+@media (prefers-reduced-motion: reduce){
+  .details, .img img, .read-btn, .score{
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+/* --- תקן את פריסת ה-layout אם לא נטען קודם --- */
+.userpage-container{
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 0 18px;
+}
+.userpage-card{
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 22px;
+  background: linear-gradient(180deg,#fff,#fafbff);
+  border: 1px solid #e6e9f0;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(15,23,42,.08);
+  padding: 16px;
+  overflow: hidden;
+}
+@media (max-width: 920px){
+  .userpage-card{ grid-template-columns: 1fr; }
+}
+
+/* --- Reset מלא לצ'יפים שהם button --- */
+.chips{                       /* מוודא פריסה בשורות מתגלגלות */
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:flex-start;
+}
+
+.chip{
+  all: unset;                /* <<< מוריד סגנון דפדפן של כפתור */
+  display:inline-flex;       /* לא שובר שורה רוחבית */
+  align-items:center;
+  max-width:100%;
   padding: 6px 10px;
   border-radius: 10px;
   font-size: .9rem;
+  line-height: 1.2;
   color: #0f172a;
   background: #ffffff;
   border: 1px solid #e6e9f0;
@@ -150,56 +250,48 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
+  transition: transform .14s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease;
 }
+.chip:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(15,23,42,.12);
+  border-color: #cbd5e1;
+}
+.chip:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px #60a5fa;
+  border-color: #60a5fa;
+}
+
 .chip--muted{
   color: #94a3b8;
   background: transparent;
   border-style: dashed;
 }
-@media (prefers-color-scheme: dark){
-  .chip{
-    color: #e5e7eb;
-    background: #111827;
-    border-color: #1f2a3a;
-  }
+
+/* --- כותרות וזהות – שיהיו אלגנטיות ולא “דפדפניות” --- */
+.userpage-name{
+  margin:0 0 4px;
+  font-size: clamp(1.2rem, 1.1vw + .9rem, 1.6rem);
+  line-height:1.25;
+  color:#0f172a;
+}
+.userpage-pills{
+  display:flex; flex-wrap:wrap; gap:8px;
+}
+.pill{
+  display:inline-flex; align-items:center;
+  padding:6px 10px; border-radius:999px;
+  font-size:.86rem; font-weight:600;
+  color:#475569; background:#f3f6fb; border:1px solid #e6e9f0;
+  max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 
-/* אזור כפתורים תחתון */
-.userpage-actions{
-  display: flex;
-  justify-content: flex-end;
-  padding: 12px 4px 0;
-}
-.userpage-back{
-  background: #fff;
-  border: 1px solid #e6e9f0;
-  color: #0f172a;
-  padding: 8px 14px;
-  border-radius: 10px;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(15,23,42,.06);
-  transition: transform .16s ease, box-shadow .2s ease;
-}
-.userpage-back:hover{
-  transform: translateY(-1px);
-  box-shadow: 0 8px 18px rgba(15,23,42,.12);
-}
+/* --- התאמות כהה (אם צריך) --- */
 @media (prefers-color-scheme: dark){
-  .userpage-back{
-    background: #111827;
-    border-color: #1f2a3a;
-    color: #e5e7eb;
-  }
-}
-
-/* מצב "לא נמצא" */
-.userpage-empty{
-  display: grid;
-  gap: 12px;
-  justify-items: center;
-  padding: 40px 0;
-}
-.userpage-empty p{
-  margin: 0;
-  color: #64748b;
+  .userpage-card{ background: linear-gradient(180deg,#111827,#0f172a); border-color:#1f2a3a; box-shadow: 0 8px 22px rgba(0,0,0,.35); }
+  .chip{ color:#e5e7eb; background:#111827; border-color:#1f2a3a; }
+  .pill{ color:#9aa7b7; background:#111827; border-color:#1f2a3a; }
+  .userpage-name{ color:#e5e7eb; }
 }

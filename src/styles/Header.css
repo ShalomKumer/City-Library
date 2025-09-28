@@ -1,50 +1,32 @@
+/* ===== Header.css (refined) ===== */
+
 /* כל ההדר */
 .header {
-  width: 100%;
-  padding: 12px 24px;
-  background: rgba(15, 23, 42, 0.6); /* כהה שקוף */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 18px rgba(0,0,0,0.25);
   position: sticky;
   top: 0;
   z-index: 50;
+  width: 100%;
+  padding: 12px 24px;
   display: flex;
   justify-content: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+  background: rgba(15, 23, 42, 0.6); /* כהה שקוף */
 }
 
-/* קבוצת הכפתורים */
-.header .buttons {
-  display: flex;
-  gap: 16px;
+/* Fallback/שיפור תמיכה ל-blur */
+@supports (backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px)) {
+  .header {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
 }
 
-/* הכפתורים עצמם */
-.header .buttons button {
-  background: transparent;
-  border: 2px solid rgba(255,255,255,0.25);
-  color: #f1f5f9; /* slate-100 */
-  font-size: 0.95rem;
-  font-weight: 600;
-  padding: 8px 20px;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-/* אפקט hover */
-.header .buttons button:hover {
-  background: rgba(255,255,255,0.15);
-  border-color: rgba(255,255,255,0.5);
-  transform: translateY(-2px);
-  color: #60a5fa; /* כחול בהיר */
-}
-
-/* פוקוס לנגישות */
-.header .buttons button:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px #3b82f6;
+/* הפחתת שקיפות למי שמעדיף פחות אפקטים */
+@media (prefers-reduced-transparency: reduce) {
+  .header {
+    background: #0f172a; /* ללא שקיפות */
+  }
 }
 
 /* מצב בהיר */
@@ -54,6 +36,67 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     box-shadow: 0 2px 12px rgba(0,0,0,0.1);
   }
+}
+
+/* קבוצת הכפתורים */
+.header .buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;              /* שבירת שורה במסכים צרים */
+  align-items: center;
+}
+
+/* הכפתורים */
+.header .buttons button {
+  background: transparent;
+  border: 2px solid rgba(255,255,255,0.25);
+  color: #f1f5f9;               /* slate-100 */
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.22s ease,
+              background 0.22s ease, border-color 0.22s ease, color 0.22s ease;
+  will-change: transform, box-shadow;
+}
+
+/* hover */
+.header .buttons button:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.5);
+  transform: translateY(-2px);
+  color: #60a5fa;
+}
+
+/* active (לחיצה) – פידבק קצר ועדין */
+.header .buttons button:active {
+  transform: translateY(0) scale(0.99);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.18) inset;
+}
+
+/* פוקוס לנגישות */
+.header .buttons button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px #3b82f6;
+}
+
+/* Disabled בטוח */
+.header .buttons button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* כפתור בעמוד הנוכחי (הוסף className="active" לפי ה־route) */
+.header .buttons button.active {
+  background: rgba(255,255,255,0.20);
+  border-color: rgba(255,255,255,0.65);
+  color: #93c5fd;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+}
+
+/* מצב בהיר – התאמות */
+@media (prefers-color-scheme: light) {
   .header .buttons button {
     border-color: rgba(0,0,0,0.2);
     color: #1e293b;
@@ -62,5 +105,25 @@
     background: rgba(0,0,0,0.05);
     border-color: rgba(0,0,0,0.4);
     color: #2563eb;
+  }
+  .header .buttons button.active {
+    background: rgba(37,99,235,0.08);
+    border-color: rgba(37,99,235,0.5);
+    color: #1d4ed8;
+    box-shadow: 0 8px 18px rgba(37,99,235,0.15);
+  }
+}
+
+/* מסכים צרים מאוד – ריווח נעים */
+@media (max-width: 420px) {
+  .header {
+    padding: 10px 14px;
+  }
+  .header .buttons {
+    gap: 10px;
+  }
+  .header .buttons button {
+    padding: 7px 14px;
+    font-size: 0.9rem;
   }
 }
